@@ -1,7 +1,6 @@
 ## Mi Get Next Line
 
-El objetivo de este proyecto es programar una función que devuelva una línea leída de un file descriptor. A través de este proyecto, aprenderás el concepto de variables estáticas en C y cómo manejar la lectura eficiente de archivos.
-
+El objetivo de este proyecto es programar una función que devuelva una línea leída de un file descriptor.
 ---
 
 ### Objetivos
