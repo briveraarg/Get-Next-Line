@@ -28,7 +28,7 @@ Los archivos de mi GNL:
 - [get_next_line.h](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line.h)
 - [get_next_line_utils.c](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line_utils.c)
 
-## Funciones
+## Funciones principales en mi GNL
 
 - **`char *get_next_line(int fd)`**: 
   Función principal que gestiona la lectura y retorno de líneas desde un file descriptor.
@@ -45,7 +45,6 @@ Los archivos de mi GNL:
 - **`char *freefree(char *texread, char *texread_print)`**: 
   Libera la memoria de las variables pasadas y retorna `NULL`.Aquí tienes el texto listo para copiar y pegar en tu archivo `README.md`:
 
----
 
 ### ¿Por qué es necesaria `update_texread`?
 
@@ -93,11 +92,6 @@ La función `update_texread` es crucial para:
 
 Sin `update_texread`, el contenido leído podría duplicarse, y `get_next_line` no funcionaría correctamente en archivos con varias líneas o en casos donde `BUFFER_SIZE` es mayor que la longitud de una línea.
 
---- 
-
-Este contenido debería ser fácil de entender para otros desarrolladores al leer el `README.md` de tu proyecto.
-
----
 
 ### Bonus
 
