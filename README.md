@@ -23,7 +23,7 @@ El objetivo de este proyecto es programar una función que devuelva una línea l
 - Intenta minimizar las lecturas cada vez que se llame a `get_next_line()`. Si encuentras un salto de línea, deberás devolver la línea actual en lugar de leer el archivo completo.
 - Se prohíbe el uso de `libft`, `lseek`, y variables globales.
 
-Los archivos de la parte bonus deben tener el sufijo `_bonus`:
+Los archivos de la parte bonus deben tener el sufijo:
 - [get_next_line.c](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line.c)
 - [get_next_line.h](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line.h)
 - [get_next_line_utils.c](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line_utils.c)
