@@ -21,7 +21,6 @@ El objetivo de este proyecto es programar una función que devuelva una línea l
 
 ### Consideraciones
 
-- Intenta minimizar las lecturas cada vez que se llame a `get_next_line()`. Si encuentras un salto de línea, deberás devolver la línea actual en lugar de leer el archivo completo.
 - Se prohíbe el uso de `libft`, `lseek`, y variables globales.
 
 Los archivos de mi GNL:
@@ -44,7 +43,60 @@ Los archivos de mi GNL:
   Actualiza `texread` eliminando la línea que acaba de ser leída.
 
 - **`char *freefree(char *texread, char *texread_print)`**: 
-  Libera la memoria de las variables pasadas y retorna `NULL`.
+  Libera la memoria de las variables pasadas y retorna `NULL`.Aquí tienes el texto listo para copiar y pegar en tu archivo `README.md`:
+
+---
+
+### ¿Por qué es necesaria `update_texread`?
+
+La función `get_next_line` no lee el archivo carácter por carácter. En su lugar, utiliza un búfer de tamaño fijo (`BUFFER_SIZE`) para leer en bloques de memoria desde el archivo. Esto significa que:
+
+1. **Lectura en Bloques**: `get_next_line` utiliza la función `readmyfd` para leer datos en bloques de tamaño `BUFFER_SIZE`. Esto hace que la lectura sea más eficiente, pero también implica que puede almacenar en memoria más de una línea a la vez, si el bloque leído contiene saltos de línea (`\n`).
+   
+2. **Posible Acumulación de Varias Líneas**: Al leer bloques de tamaño `BUFFER_SIZE`, es posible que `readmyfd` lea más de una línea en una sola llamada o incluso una línea y parte de la siguiente. Por ejemplo, si `BUFFER_SIZE` es 20, pero una línea tiene solo 10 caracteres, `texread` podría contener esa línea **y parte de la siguiente**.
+
+3. **Extracción de una Línea**: Para cada llamada a `get_next_line`, se extrae solo la primera línea de `texread`. Sin embargo, al hacerlo, en `texread` puede quedar almacenado contenido adicional (el bloque sobrante o la parte de la siguiente línea).
+
+### ¿Qué hace `update_texread`?
+
+La función `update_texread` tiene la responsabilidad de **actualizar el contenido de `texread`** después de cada línea extraída. 
+
+1. **Elimina el Contenido Procesado**: Una vez que `createmyline` extrae la primera línea de `texread`, `update_texread` elimina esa línea procesada, dejando en `texread` únicamente el contenido pendiente.
+
+2. **Mantiene la Continuidad de la Lectura**: Al actualizar `texread` para que solo contenga los datos no procesados, `update_texread` permite que `get_next_line` continúe de manera continua y eficiente, siempre leyendo desde donde se quedó en la última línea procesada.
+
+### Ejemplo
+
+Imaginemos un archivo con el siguiente contenido:
+```
+"Hola, Argentina!\n¿Cómo estás?\nTodo bien, gracias.\n"
+
+```
+Y un `BUFFER_SIZE` de 20.
+
+- **Primera llamada** a `get_next_line`:
+`readmyfd` lee un bloque de 20 "Hola, Argentina!\n¿Cómo "
+
+  ```
+  `createmyline` extrae "Hola Argentina\n", pero **queda en `texread`**: 
+  ```
+  "¿Cómo "
+
+  ```
+
+- **`update_texread` limpia `texread`** para que solo contenga "¿Cómo ", permitiendo que la siguiente llamada a `get_next_line` continúe leyendo desde esta posición.
+
+## Resumen
+
+La función `update_texread` es crucial para:
+- **Manejar la lectura en bloques de memoria**: ajustando `texread` para que no acumule datos ya procesados.
+- **Garantizar la continuidad de la lectura línea por línea**: cada llamada a `get_next_line` procesa una línea nueva sin repetir información ya leída.
+
+Sin `update_texread`, el contenido leído podría duplicarse, y `get_next_line` no funcionaría correctamente en archivos con varias líneas o en casos donde `BUFFER_SIZE` es mayor que la longitud de una línea.
+
+--- 
+
+Este contenido debería ser fácil de entender para otros desarrolladores al leer el `README.md` de tu proyecto.
 
 ---
 
