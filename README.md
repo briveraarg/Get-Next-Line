@@ -1,6 +1,8 @@
 ## Mi Get Next Line
 
 El objetivo de este proyecto es programar una función que devuelva una línea leída de un file descriptor.
+
+
 ---
 
 ### Objetivos
