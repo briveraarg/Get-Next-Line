@@ -76,9 +76,8 @@ Y un `BUFFER_SIZE` de 20.
 
 - **Primera llamada** a `get_next_line`:
 `readmyfd` lee un bloque de 20 "Hola, Argentina!\n¿Cómo "
+`createmyline` extrae "Hola Argentina\n", pero **queda en `texread`**:
 
-  ```
-  `createmyline` extrae "Hola Argentina\n", pero **queda en `texread`**: 
   ```
   "¿Cómo "
 
