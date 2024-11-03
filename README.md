@@ -45,7 +45,6 @@ Los archivos de mi GNL:
 - **`char *freefree(char *texread, char *texread_print)`**: 
   Libera la memoria de las variables pasadas y retorna `NULL`.Aquí tienes el texto listo para copiar y pegar en tu archivo `README.md`:
 
-
 ### ¿Por qué es necesaria `update_texread`?
 
 La función `get_next_line` no lee el archivo carácter por carácter. En su lugar, utiliza un búfer de tamaño fijo (`BUFFER_SIZE`) para leer en bloques de memoria desde el archivo. Esto significa que:
@@ -84,13 +83,37 @@ Y un `BUFFER_SIZE` de 20.
 
 - **`update_texread` limpia `texread`** para que solo contenga "¿Cómo ", permitiendo que la siguiente llamada a `get_next_line` continúe leyendo desde esta posición.
 
-## Resumen
 
 La función `update_texread` es crucial para:
 - **Manejar la lectura en bloques de memoria**: ajustando `texread` para que no acumule datos ya procesados.
 - **Garantizar la continuidad de la lectura línea por línea**: cada llamada a `get_next_line` procesa una línea nueva sin repetir información ya leída.
 
 Sin `update_texread`, el contenido leído podría duplicarse, y `get_next_line` no funcionaría correctamente en archivos con varias líneas o en casos donde `BUFFER_SIZE` es mayor que la longitud de una línea.
+Aquí tienes el texto en formato `README.md` para copiar y pegar:
+
+---
+
+### Detalle paso a paso de cómo funciona la lectura con el descriptor de archivo (`fd`)
+
+### 1. Abrir el archivo
+Cuando abres un archivo (con una función como `open()` en C), el sistema operativo asigna un **descriptor de archivo (`fd`)** a ese archivo abierto. Este descriptor es un "número identificador" que te permite acceder al archivo a través de operaciones de lectura y escritura.
+
+### 2. Puntero de archivo
+Al abrir un archivo, el sistema operativo también inicializa un **puntero de archivo interno** en la posición inicial (al principio del archivo). Este puntero mantiene la posición actual dentro del archivo para el descriptor (`fd`) en cuestión, permitiendo que el sistema sepa desde dónde continuar en cada operación de lectura 
+
+### 3. Llamada a la función read
+Cada vez que se llama a `read(fd, buffer, BUFFER_SIZE);`, el sistema operativo:
+   - **Lee desde la posición actual** del puntero de archivo hasta la cantidad especificada (en este caso, `BUFFER_SIZE` bytes).
+   - Copia esos datos al `buffer`.
+   - **Actualiza automáticamente** el puntero de archivo para que apunte al final del bloque leído, listo para la siguiente lectura.
+
+Por ejemplo, si `BUFFER_SIZE` es 20 y lees los primeros 20 bytes del archivo, el puntero de archivo se moverá automáticamente a la posición 21 después de la lectura, de forma que la siguiente llamada a `read` continúe desde allí.
+
+### 4. Lectura continua
+La siguiente vez que se llame a `read(fd, buffer, BUFFER_SIZE);`, el sistema operativo comenzará desde donde quedó el puntero de archivo tras la última lectura. Esto permite que funciones como `readmyfd` añadan más contenido a `texread` en cada iteración, sin duplicar datos que ya fueron leídos.
+
+### 5. No depende de `texread`
+Es importante ver que el puntero de archivo no tiene relación con `texread`. El puntero es gestionado de manera independiente por el sistema operativo. **`texread` solo almacena el texto leído**, y cualquier dato adicional que se lea se anexa a `texread` sin preocuparse por la posición en el archivo. Esto permite que `get_next_line` pueda procesar el archivo en partes sin perder el punto de lectura, ya que el sistema operativo mantiene el seguimiento automáticamente.
 
 
 ### Bonus
