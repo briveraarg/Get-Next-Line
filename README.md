@@ -28,7 +28,9 @@ Los archivos de mi GNL:
 - [get_next_line.h](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line.h)
 - [get_next_line_utils.c](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line_utils.c)
 
-## Funciones principales en mi GNL
+----
+
+### Funciones principales en mi GNL
 
 - **`char *get_next_line(int fd)`**: 
   Función principal que gestiona la lectura y retorno de líneas desde un file descriptor.
@@ -91,7 +93,7 @@ La función `update_texread` es crucial para:
 Sin `update_texread`, el contenido leído podría duplicarse, y `get_next_line` no funcionaría correctamente en archivos con varias líneas o en casos donde `BUFFER_SIZE` es mayor que la longitud de una línea.
 Aquí tienes el texto en formato `README.md` para copiar y pegar:
 
----
+----
 
 ### Detalle paso a paso de cómo funciona la lectura con el descriptor de archivo (`fd`)
 
@@ -115,6 +117,7 @@ La siguiente vez que se llame a `read(fd, buffer, BUFFER_SIZE);`, el sistema ope
 ### 5. No depende de `texread`
 Es importante ver que el puntero de archivo no tiene relación con `texread`. El puntero es gestionado de manera independiente por el sistema operativo. **`texread` solo almacena el texto leído**, y cualquier dato adicional que se lea se anexa a `texread` sin preocuparse por la posición en el archivo. Esto permite que `get_next_line` pueda procesar el archivo en partes sin perder el punto de lectura, ya que el sistema operativo mantiene el seguimiento automáticamente.
 
+----
 
 ### Bonus
 
