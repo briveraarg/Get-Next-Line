@@ -45,7 +45,7 @@ Los archivos de mi GNL:
   Actualiza `texread` eliminando la línea que acaba de ser leída.
 
 - **`char *freefree(char *texread, char *texread_print)`**: 
-  Libera la memoria de las variables pasadas y retorna `NULL`.Aquí tienes el texto listo para copiar y pegar en tu archivo `README.md`:
+  Libera la memoria de las variables pasadas y retorna `NULL`.
 
 ### ¿Por qué es necesaria `update_texread`?
 
