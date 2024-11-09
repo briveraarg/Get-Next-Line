@@ -91,7 +91,7 @@ La función `update_texread` es crucial para:
 - **Garantizar la continuidad de la lectura línea por línea**: cada llamada a `get_next_line` procesa una línea nueva sin repetir información ya leída.
 
 Sin `update_texread`, el contenido leído podría duplicarse, y `get_next_line` no funcionaría correctamente en archivos con varias líneas o en casos donde `BUFFER_SIZE` es mayor que la longitud de una línea.
-Aquí tienes el texto en formato `README.md` para copiar y pegar:
+
 
 ----
 
