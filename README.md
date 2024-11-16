@@ -14,7 +14,7 @@ El objetivo de este proyecto es programar una función que devuelva una línea l
   cc -Wall -Werror -Wextra -D BUFFER_SIZE=42 <archivos>.c
   ```
 
-#### Comportamiento Indeterminado
+#### Comportamiento indeterminado
 
 - `get_next_line()` tendrá un comportamiento indeterminado si el archivo apuntado por el descriptor de archivo (fd) ha cambiado desde la última llamada, siempre que `read()` no haya llegado al final del archivo.
 - La función también tendrá un comportamiento indeterminado si se intenta leer un archivo binario.
@@ -51,11 +51,11 @@ Los archivos de mi GNL:
 
 La función `get_next_line` no lee el archivo carácter por carácter. En su lugar, utiliza un búfer de tamaño fijo (`BUFFER_SIZE`) para leer en bloques de memoria desde el archivo. Esto significa que:
 
-1. **Lectura en Bloques**: `get_next_line` utiliza la función `readmyfd` para leer datos en bloques de tamaño `BUFFER_SIZE`. Esto hace que la lectura sea más eficiente, pero también implica que puede almacenar en memoria más de una línea a la vez, si el bloque leído contiene saltos de línea (`\n`).
+1. **Lectura en bloques**: `get_next_line` utiliza la función `readmyfd` para leer datos en bloques de tamaño `BUFFER_SIZE`. Esto hace que la lectura sea más eficiente, pero también implica que puede almacenar en memoria más de una línea a la vez, si el bloque leído contiene saltos de línea (`\n`).
    
-2. **Posible Acumulación de Varias Líneas**: Al leer bloques de tamaño `BUFFER_SIZE`, es posible que `readmyfd` lea más de una línea en una sola llamada o incluso una línea y parte de la siguiente. Por ejemplo, si `BUFFER_SIZE` es 20, pero una línea tiene solo 10 caracteres, `texread` podría contener esa línea **y parte de la siguiente**.
+2. **Posible acumulación de varias líneas**: Al leer bloques de tamaño `BUFFER_SIZE`, es posible que `readmyfd` lea más de una línea en una sola llamada o incluso una línea y parte de la siguiente. Por ejemplo, si `BUFFER_SIZE` es 20, pero una línea tiene solo 10 caracteres, `texread` podría contener esa línea **y parte de la siguiente**.
 
-3. **Extracción de una Línea**: Para cada llamada a `get_next_line`, se extrae solo la primera línea de `texread`. Sin embargo, al hacerlo, en `texread` puede quedar almacenado contenido adicional (el bloque sobrante o la parte de la siguiente línea).
+3. **Extracción de una línea**: Para cada llamada a `get_next_line`, se extrae solo la primera línea de `texread`. Sin embargo, al hacerlo, en `texread` puede quedar almacenado contenido adicional (el bloque sobrante o la parte de la siguiente línea).
 
 ### ¿Qué hace `update_texread`?
 
@@ -123,7 +123,7 @@ Es importante ver que el puntero de archivo no tiene relación con `texread`. El
 
 En la versión bonus de [get_next_line_bonus.c](https://github.com/briveraarg/Get-Next-Line/blob/main/get_next_line_bonus.c), se ha añadido la capacidad de manejar múltiples descriptores de archivo (fd) utilizando un array estático de punteros `texread`. Esto permite gestionar la lectura de líneas desde diferentes archivos sin interferencias.
 
-- **Array Estático**: Se utiliza `static char *texread[1024]`, lo que proporciona un espacio en memoria independiente para cada descriptor de archivo, facilitando la lectura simultánea de varios archivos.
+- **Array estático**: Se utiliza `static char *texread[1024]`, lo que proporciona un espacio en memoria independiente para cada descriptor de archivo, facilitando la lectura simultánea de varios archivos.
 
 - **Verificación de fd**: La función comprueba que el fd esté en el rango de 0 a 1023. Si el fd es inválido o si `BUFFER_SIZE` es menor o igual a 0, retorna `NULL`.
 
